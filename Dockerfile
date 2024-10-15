@@ -6,16 +6,15 @@ WORKDIR /app
 
 # Copia los archivos de dependencias
 COPY package*.json ./
-COPY yarn.lock ./
 
 # Instala las dependencias
-RUN yarn install
+RUN npm install
 
 # Copia el resto del código fuente
 COPY . .
 
 # Construye la aplicación para producción
-RUN yarn build
+RUN npm run build
 
 # Etapa de producción
 FROM nginx:stable-alpine AS production-stage

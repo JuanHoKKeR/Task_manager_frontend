@@ -122,10 +122,10 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="closeEditDialog">
+          <v-btn color="blue darken-1" variant="text" @click="closeEditDialog">
             Cancelar
           </v-btn>
-          <v-btn color="green darken-1" text @click="updateTask">
+          <v-btn color="green darken-1" variant="text" @click="updateTask">
             Guardar Cambios
           </v-btn>
         </v-card-actions>
@@ -181,7 +181,7 @@ export default defineComponent({
       try {
         await taskStore.fetchTasks()
         tasks.value = taskStore.tasks
-      } catch (err) {
+      } catch {
         error.value = 'Error al cargar las tareas.'
       } finally {
         loading.value = false
@@ -192,8 +192,8 @@ export default defineComponent({
       try {
         await tagStore.fetchTags()
         tags.value = tagStore.tags
-      } catch (err) {
-        console.error('Error al obtener las etiquetas:', err)
+      } catch {
+        console.error('Error al obtener las etiquetas:', error)
         error.value = 'Error al cargar las etiquetas.'
       }
     }
@@ -202,7 +202,7 @@ export default defineComponent({
       try {
         await taskStore.deleteTask(id)
         await fetchTasks()
-      } catch (err) {
+      } catch {
         error.value = 'Error al eliminar la tarea.'
       }
     }
@@ -211,7 +211,7 @@ export default defineComponent({
       try {
         await taskStore.partialUpdateTask(id, { status: 'completed' })
         await fetchTasks()
-      } catch (err) {
+      } catch {
         error.value = 'Error al marcar la tarea como completada.'
       }
     }
@@ -251,7 +251,7 @@ export default defineComponent({
         await taskStore.updateTask(editedTask.value.id, updatedData)
         await fetchTasks()
         closeEditDialog()
-      } catch (err) {
+      } catch {
         error.value = 'Error al actualizar la tarea.'
       }
     }
@@ -263,7 +263,9 @@ export default defineComponent({
     }
 
     // Función para verificar si un archivo es una imagen
-    const isImage = (url: string): boolean => {
+    const isImage = (url: string | File | undefined): boolean => {
+      if (!url) return false
+      if (typeof url !== 'string') return false
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
       const urlPath = url.split('?')[0]
       const extension = urlPath.split('.').pop()?.toLowerCase()
@@ -271,8 +273,14 @@ export default defineComponent({
     }
 
     // Función para obtener la URL completa del adjunto
-    const getAttachmentURL = (attachmentPath: string): string => {
+    const getAttachmentURL = (
+      attachmentPath: string | File | undefined,
+    ): string => {
       // Si attachmentPath es una URL absoluta
+      if (!attachmentPath) return ''
+      if (attachmentPath instanceof File) {
+        return ''
+      }
       if (attachmentPath.startsWith('http')) {
         return attachmentPath
       }
@@ -303,6 +311,7 @@ export default defineComponent({
       capitalizeStatus,
       isImage,
       getAttachmentURL,
+      fetchTasks,
     }
   },
 })

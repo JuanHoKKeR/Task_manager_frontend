@@ -12,7 +12,12 @@
         />
       </v-radio-group>
     </div>
-    <v-btn @click="clearFilter" class="clear-button" color="primary" text>
+    <v-btn
+      @click="clearFilter"
+      class="clear-button"
+      color="primary"
+      variant="text"
+    >
       Limpiar Filtro
     </v-btn>
   </div>
@@ -40,6 +45,9 @@ export default defineComponent({
       taskStore.setFilter(newStatus)
     })
 
+    const filterTasks = () => {
+      taskStore.setFilter(selectedStatus.value)
+    }
     // Limpiamos el filtro
     const clearFilter = () => {
       selectedStatus.value = 'all'
@@ -49,6 +57,7 @@ export default defineComponent({
       statusOptions,
       selectedStatus,
       clearFilter,
+      filterTasks,
     }
   },
 })
