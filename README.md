@@ -1,7 +1,3 @@
-¡Me alegra saber que todo funcionó correctamente! Será un placer ayudarte a crear el README para tu proyecto **Task_Manager_Frontend**. A continuación, te proporciono un README estructurado en español, con secciones listas para que puedas agregar las imágenes de las funcionalidades y vistas que mencionaste.
-
----
-
 # **Task Manager Frontend**
 
 ¡Bienvenido a **Task Manager Frontend**! Esta es una aplicación web desarrollada con Vue.js y TypeScript que permite gestionar tareas de manera eficiente. La aplicación ofrece funcionalidades como creación, visualización, edición y eliminación de tareas, así como la posibilidad de agregar etiquetas y archivos adjuntos. Además, incluye funcionalidades de autenticación y estadísticas para mejorar la experiencia del usuario.
@@ -44,7 +40,7 @@ A continuación, se muestran algunas capturas de pantalla de las principales fun
 
 ### **Visualizador de Tareas**
 
-![Visualizador de Tareas](ruta/a/tu/imagen_visualizador_de_tareas.png)
+![Visualizador de Tareas](/imagenes/Varias Tareas.png)
 
 _Descripción_: Muestra la lista de tareas con detalles importantes para el usuario.
 
@@ -188,10 +184,6 @@ Este proyecto está bajo la Licencia MIT - mira el archivo [LICENSE](LICENSE) pa
 
 ## **Autor**
 
-- **Tu Nombre** - [Tu Perfil de GitHub](https://github.com/tu-usuario)
+- **Juan Cruz** - [Tu Perfil de GitHub](https://github.com/JuanHoKKeR/)
 
 ---
-
-¡Listo! He preparado el README con las secciones solicitadas y espacios donde puedes agregar las imágenes de las funcionalidades y vistas. Solo necesitas reemplazar `ruta/a/tu/imagen_nombre.png` con la ruta correcta a tus imágenes.
-
-Si deseas agregar más información o hacer ajustes adicionales, no dudes en hacerlo. Si necesitas más ayuda, ¡estoy aquí para asistirte!
