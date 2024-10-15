@@ -19,6 +19,9 @@ RUN npm run build
 # Etapa de producción
 FROM nginx:stable-alpine AS production-stage
 
+# Copia el archivo de configuración personalizado de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copia los archivos compilados al directorio de Nginx
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
@@ -27,3 +30,4 @@ EXPOSE 80
 
 # Comando para ejecutar Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
