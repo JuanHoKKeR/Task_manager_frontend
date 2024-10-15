@@ -36,6 +36,29 @@
                 {{ tag.name }}
               </v-chip>
             </div>
+            <!-- Mostrar el adjunto si existe -->
+            <div v-if="task.attachment">
+              <strong>Adjunto:</strong>
+              <div v-if="isImage(task.attachment)">
+                <!-- Mostrar la imagen -->
+                <v-img
+                  :src="getAttachmentURL(task.attachment)"
+                  max-height="200"
+                  class="mt-2"
+                ></v-img>
+              </div>
+              <div v-else>
+                <!-- Proporcionar enlace para descargar o abrir -->
+                <v-btn
+                  :href="getAttachmentURL(task.attachment)"
+                  target="_blank"
+                  color="primary"
+                  class="mt-2"
+                >
+                  Descargar Adjunto
+                </v-btn>
+              </div>
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-btn color="success" @click.stop="markTaskAsCompleted(task.id)">
@@ -116,6 +139,7 @@ import { defineComponent, ref, onMounted } from 'vue'
 import { useTaskStore } from '@/stores/taskStore'
 import { useTagStore } from '@/stores/tagStore'
 import type { Task, Tag } from '@/types'
+import axios from '@/plugins/axios'
 
 export default defineComponent({
   name: 'ShowTasks',
@@ -127,6 +151,7 @@ export default defineComponent({
 
     const tasks = ref<Task[]>([])
     const tags = ref<Tag[]>([])
+
     const isEditDialogOpen = ref(false)
     const editedTask = ref({
       id: 0,
@@ -143,6 +168,8 @@ export default defineComponent({
       { text: 'Completada', value: 'completed' },
       { text: 'Abandonada', value: 'abandoned' },
     ]
+
+    const baseURL = axios.defaults.baseURL || ''
 
     onMounted(async () => {
       await fetchTasks()
@@ -196,7 +223,7 @@ export default defineComponent({
         description: task.description || '',
         deadline: task.deadline || '',
         status: task.status || 'pending',
-        attachment: null, // Si necesitas manejar el archivo adjunto
+        attachment: null,
       }
       // Obtener los IDs de las etiquetas seleccionadas
       editedTags.value = task.tags ? task.tags.map(tag => tag.id) : []
@@ -209,12 +236,14 @@ export default defineComponent({
 
     const updateTask = async () => {
       try {
-        // Preparar los datos actualizados
         const updatedData = {
           title: editedTask.value.title,
           description: editedTask.value.description,
           deadline: editedTask.value.deadline,
-          status: editedTask.value.status,
+          status: editedTask.value.status as
+            | 'pending'
+            | 'completed'
+            | 'abandoned',
           tags: editedTags.value.length > 0 ? editedTags.value : undefined,
           attachment: editedTask.value.attachment || undefined,
         }
@@ -233,6 +262,30 @@ export default defineComponent({
       return option ? option.text : status
     }
 
+    // Función para verificar si un archivo es una imagen
+    const isImage = (url: string): boolean => {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
+      const urlPath = url.split('?')[0]
+      const extension = urlPath.split('.').pop()?.toLowerCase()
+      return extension ? imageExtensions.includes(extension) : false
+    }
+
+    // Función para obtener la URL completa del adjunto
+    const getAttachmentURL = (attachmentPath: string): string => {
+      // Si attachmentPath es una URL absoluta
+      if (attachmentPath.startsWith('http')) {
+        return attachmentPath
+      }
+      // Asegurar que baseURL termina sin '/' y attachmentPath comienza con '/'
+      const normalizedBaseURL = baseURL.endsWith('/')
+        ? baseURL.slice(0, -1)
+        : baseURL
+      const normalizedPath = attachmentPath.startsWith('/')
+        ? attachmentPath
+        : '/' + attachmentPath
+      return normalizedBaseURL + normalizedPath
+    }
+
     return {
       tasks,
       tags,
@@ -242,13 +295,14 @@ export default defineComponent({
       editedTask,
       editedTags,
       statusOptions,
-      fetchTasks,
       deleteTask,
       markTaskAsCompleted,
       openEditDialog,
       closeEditDialog,
       updateTask,
       capitalizeStatus,
+      isImage,
+      getAttachmentURL,
     }
   },
 })

@@ -1,106 +1,108 @@
 <!-- src/components/NewTask.vue -->
 <template>
-  <v-card class="pa-4">
-    <v-form @submit.prevent="addTask">
-      <h2>Crea una Nueva Tarea 😎</h2>
+  <div class="container-newtask">
+    <v-card class="pa-4">
+      <v-form @submit.prevent="addTask">
+        <h2>Crea una Nueva Tarea 😎</h2>
 
-      <!-- Campo Título -->
-      <v-text-field
-        v-model="title"
-        label="Título de la tarea"
-        :rules="[v => !!v || 'El título es requerido']"
-        required
-      />
-
-      <!-- Campo Descripción -->
-      <v-textarea v-model="description" label="Descripción" rows="3" />
-
-      <!-- Selector de Estado -->
-      <div class="mt-2">
-        <h4>Estado:</h4>
-        <v-radio-group v-model="status" row>
-          <v-radio
-            v-for="option in statusOptions"
-            :key="option.value"
-            :label="option.text"
-            :value="option.value"
-          />
-        </v-radio-group>
-      </div>
-
-      <!-- Selector de Etiquetas -->
-      <div class="mt-2">
-        <h4>Etiquetas:</h4>
-        <v-checkbox
-          v-for="tag in tags"
-          :key="tag.id"
-          :label="tag.name"
-          :value="tag.id"
-          v-model="selectedTags"
-          class="mb-1"
-        />
-      </div>
-
-      <!-- Crear Nueva Etiqueta -->
-      <div class="mt-2">
+        <!-- Campo Título -->
         <v-text-field
-          v-model="newTagName"
-          label="Nueva Etiqueta"
-          @keyup.enter="createTag"
+          v-model="title"
+          label="Título de la tarea"
+          :rules="[v => !!v || 'El título es requerido']"
+          required
         />
-        <v-btn @click="createTag" color="primary" class="mt-2">
-          Crear Etiqueta
+
+        <!-- Campo Descripción -->
+        <v-textarea v-model="description" label="Descripción" rows="3" />
+
+        <!-- Selector de Estado -->
+        <div class="mt-2">
+          <h4>Estado:</h4>
+          <v-radio-group v-model="status" row>
+            <v-radio
+              v-for="option in statusOptions"
+              :key="option.value"
+              :label="option.text"
+              :value="option.value"
+            />
+          </v-radio-group>
+        </div>
+
+        <!-- Selector de Etiquetas -->
+        <div class="mt-2">
+          <h4>Etiquetas:</h4>
+          <v-checkbox
+            v-for="tag in tags"
+            :key="tag.id"
+            :label="tag.name"
+            :value="tag.id"
+            v-model="selectedTags"
+            class="mb-1"
+          />
+        </div>
+
+        <!-- Crear Nueva Etiqueta -->
+        <div class="mt-2">
+          <v-text-field
+            v-model="newTagName"
+            label="Nueva Etiqueta"
+            @keyup.enter="createTag"
+          />
+          <v-btn @click="createTag" color="primary" class="mt-2">
+            Crear Etiqueta
+          </v-btn>
+        </div>
+
+        <!-- Campo Adjuntar Archivo -->
+        <v-file-input
+          v-model="attachment"
+          label="Archivo adjunto"
+          prepend-icon="mdi-paperclip"
+          accept="image/*,application/pdf"
+          :rules="[
+            v =>
+              !v ||
+              (v && v.size < 10485760) ||
+              'Archivo demasiado grande (máx 10MB)',
+          ]"
+        />
+
+        <!-- Campo Fecha de Finalización -->
+        <v-text-field
+          v-model="deadline"
+          label="Fecha de finalización"
+          type="date"
+          :rules="[v => !!v || 'La fecha de finalización es requerida']"
+          required
+        />
+
+        <!-- Botón Agregar Tarea -->
+        <v-btn
+          type="submit"
+          color="primary"
+          :loading="loading"
+          class="mt-4"
+          block
+        >
+          Agregar Tarea
         </v-btn>
-      </div>
 
-      <!-- Campo Adjuntar Archivo -->
-      <v-file-input
-        v-model="attachment"
-        label="Archivo adjunto"
-        prepend-icon="mdi-paperclip"
-        accept="image/*,application/pdf"
-        :rules="[
-          v =>
-            !v ||
-            (v && v.size < 10485760) ||
-            'Archivo demasiado grande (máx 10MB)',
-        ]"
-      />
+        <!-- Alerta de Error -->
+        <v-alert v-if="error" type="error" dismissible class="mt-2">
+          {{ error }}
+        </v-alert>
 
-      <!-- Campo Fecha de Finalización -->
-      <v-text-field
-        v-model="deadline"
-        label="Fecha de finalización"
-        type="date"
-        :rules="[v => !!v || 'La fecha de finalización es requerida']"
-        required
-      />
-
-      <!-- Botón Agregar Tarea -->
-      <v-btn
-        type="submit"
-        color="primary"
-        :loading="loading"
-        class="mt-4"
-        block
-      >
-        Agregar Tarea
-      </v-btn>
-
-      <!-- Alerta de Error -->
-      <v-alert v-if="error" type="error" dismissible class="mt-2">
-        {{ error }}
-      </v-alert>
-
-      <!-- Indicador de Carga -->
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        color="primary"
-        class="mt-2"
-      />
-    </v-form>
-  </v-card>
+        <!-- Indicador de Carga -->
+        <v-progress-circular
+          v-if="loading"
+          indeterminate
+          color="primary"
+          class="mt-2"
+        />
+      </v-form>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -244,6 +246,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container-newtask {
+  margin: 80px 40px 80px;
+}
 .pa-4 {
   padding: 1.5rem;
 }
