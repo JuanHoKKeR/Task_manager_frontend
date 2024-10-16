@@ -184,6 +184,6 @@ Este proyecto está bajo la Licencia MIT - mira el archivo [LICENSE](LICENSE) pa
 
 ## **Autor**
 
-- **Juan Cruz** - [Tu Perfil de GitHub](https://github.com/JuanHoKKeR/)
+- **Juan Cruz** - [JuanHoKKeR](https://github.com/JuanHoKKeR/)
 
 ---
