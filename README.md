@@ -46,13 +46,13 @@ _Descripción_: Muestra la lista de tareas con detalles importantes para el usua
 
 ### **Completar Tarea**
 
-![Completar Tarea](imagenes/Eliminar_completar_o_editar_tarea.png)
+![Completar Tarea](imagenes/Eliminar_completar_editar_tarea.png)
 
 _Descripción_: Permite marcar una tarea como completada directamente desde la lista.
 
 ### **Borrar Tarea**
 
-![Borrar Tarea](imagenes/Eliminar_completar_o_editar_tarea.png)
+![Borrar Tarea](imagenes/Eliminar_completar_editar_tarea.png)
 
 _Descripción_: Opción para eliminar tareas que ya no son necesarias.
 
