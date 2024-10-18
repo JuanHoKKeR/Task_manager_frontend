@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/userStore'
 const api = axios.create({
   baseURL:
     import.meta.env.VUE_APP_BACKEND_URL ||
-    'localhost:8000/api',
+    'https://task-manager-backend-sjcs.onrender.com/api/',
 })
 
 // Interceptor para añadir el token a las cabeceras de cada petición
